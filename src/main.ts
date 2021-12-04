@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: console,
+    // logger: console,
   });
   const port = process.env.PORT ?? 3000;
   const docsConfig = new DocumentBuilder()
@@ -16,12 +16,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, docsConfig);
   SwaggerModule.setup('docs', app, document);
 
-<<<<<<< Updated upstream
-  await app.listen(3000);
-=======
   app.setGlobalPrefix('api/v1');
   await app.listen(port);
   console.log('listening to port', port);
->>>>>>> Stashed changes
 }
 bootstrap();

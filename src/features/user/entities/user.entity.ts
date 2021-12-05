@@ -1,24 +1,30 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// import { Entity, Column, PrimaryGeneratedColumn, Table } from 'typeorm';
+import {
+  Table,
+  Column,
+  Model,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 
-@Entity({
-  name: 'user',
+@Table({
+  modelName: 'user',
+  freezeTableName: true,
+  tableName: 'user',
+  underscored: true,
 })
-export class UserEntity {
-  @PrimaryGeneratedColumn()
+export class UserModel extends Model {
+  @Column({
+    primaryKey: true,
+    autoIncrement: true,
+  })
   id: number;
 
-  @Column()
+  @Column
   firstName: string;
 
-  @Column()
+  @Column
   lastName: string;
-
-  @Column({
-    nullable: false,
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
 
   // @Column({
   //   nullable: false,
@@ -27,13 +33,13 @@ export class UserEntity {
   // email: string;
 
   @Column({
-    nullable: false,
+    allowNull: false,
     unique: true,
   })
   username: string;
 
   @Column({
-    nullable: false,
+    allowNull: false,
   })
   password: string;
 }

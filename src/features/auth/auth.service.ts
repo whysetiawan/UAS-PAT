@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { decryptFromAES256 } from 'src/utils/encryption';
-import { UserEntity } from '../user/entities/user.entity';
+import { UserModel } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AuthService {
     return null;
   }
 
-  generateAccessToken(user: UserEntity) {
+  generateAccessToken(user: UserModel) {
     const payload = {
       username: user.username,
       firstName: user.firstName,

@@ -14,7 +14,7 @@ import { encryptToAES256 } from 'src/utils/encryption';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
 
 import { CreateUserDto, LoginUserDto } from './dto/user.dto';
-import { UserEntity } from './entities/user.entity';
+import { UserModel } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @ApiTags('User')
@@ -25,7 +25,7 @@ export class UserController {
   ) {}
 
   @Post()
-  async addUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
+  async addUser(@Body() createUserDto: CreateUserDto): Promise<UserModel> {
     // const encryptedPassword = this.encryptionService.encryptToAES256(
     //   createUserDto.password,
     // );
@@ -43,8 +43,13 @@ export class UserController {
   @Get('/me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
-  login(@Req() request: jwtPayload): Promise<UserEntity> {
+  login(@Req() request: jwtPayload): Promise<UserModel> {
     // console.log('got a request from /me ', request);
     return this.userService.findByUsername(request.user.username);
+  }
+
+  @Get()
+  getUserList() {
+    return this.userService.findAll();
   }
 }

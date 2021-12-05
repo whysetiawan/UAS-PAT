@@ -8,9 +8,19 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './features/auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModel } from './features/user/entities/user.entity';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        prettyPrint: {
+          colorize: true,
+          levelFirst: true,
+          translateTime: 'UTC:dd/mm/yyyy, h:MM:ss TT Z',
+        },
+      },
+    }),
     ConfigModule.forRoot({
       envFilePath: ['.env'],
     }),

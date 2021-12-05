@@ -3,10 +3,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  console.log('the env is', process.env);
+  console.log('db url is ', process.env.DB_URL);
   const app = await NestFactory.create(AppModule, {
     // logger: console,
   });
+
   app.setGlobalPrefix('api/v1');
 
   const port = process.env.PORT ?? 3000;

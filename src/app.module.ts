@@ -33,7 +33,7 @@ import { AuthModule } from './features/auth/auth.module';
     UserModule,
     AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

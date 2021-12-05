@@ -7,7 +7,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 // import { hash } from 'src/utils/encryption';
 import * as bcrypt from 'bcrypt';
 import { encryptToAES256 } from 'src/utils/encryption';
@@ -17,6 +17,7 @@ import { CreateUserDto, LoginUserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
 import { UserService } from './user.service';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(

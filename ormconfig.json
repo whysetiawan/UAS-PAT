@@ -1,9 +1,0 @@
-{
-  "type": "mongodb",
-  "url": "mongodb://db-admin:OgMtn5XoDc4fg4Sa@cayn-shard-00-00.yusnl.mongodb.net:27017,cayn-shard-00-01.yusnl.mongodb.net:27017,cayn-shard-00-02.yusnl.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-6hoq84-shard-0&authSource=admin&retryWrites=true&w=majority",
-  "useNewUrlParser": true,
-  "synchronize": true,
-  "logging": true,
-  "useUnifiedTopology": true,
-  "entities": ["dist/**/*.entity{.ts,.js}"]
-}

@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 // import db from './app.db_connection';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppService } from './app.service';
 import { UserModule } from './features/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './features/auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModel } from './features/user/entities/user.entity';
 import { LoggerModule } from 'nestjs-pino';
+import { RoleModel } from './features/user/entities/role.entity';
 
 @Module({
   imports: [
@@ -57,14 +55,14 @@ import { LoggerModule } from 'nestjs-pino';
         },
       },
       sync: {
-        force: true,
+        // force: true,
         alter: {
-          drop: true,
+          drop: false,
         },
       },
       // logging: true,
       autoLoadModels: true,
-      models: [UserModel],
+      models: [UserModel, RoleModel],
     }),
     AuthModule,
     UserModule,

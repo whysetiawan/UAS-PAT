@@ -12,8 +12,10 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
 import { encryptToAES256 } from 'src/utils/encryption';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { CreateRoleDto } from './dto/role.dto';
 
 import { CreateUserDto, LoginUserDto } from './dto/user.dto';
+import { RoleModel } from './entities/role.entity';
 import { UserModel } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -25,7 +27,7 @@ export class UserController {
   ) {}
 
   @Post()
-  async addUser(@Body() createUserDto: CreateUserDto): Promise<UserModel> {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserModel> {
     // const encryptedPassword = this.encryptionService.encryptToAES256(
     //   createUserDto.password,
     // );
@@ -49,7 +51,17 @@ export class UserController {
   }
 
   @Get()
-  getUserList() {
+  findAllUser() {
     return this.userService.findAll();
+  }
+
+  @Post('role')
+  createRole(@Body() createRoleDto: CreateRoleDto): Promise<RoleModel> {
+    return this.userService.createRole(createRoleDto);
+  }
+
+  @Get('role')
+  findAllRole(): Promise<RoleModel[]> {
+    return this.userService.findAllRole();
   }
 }

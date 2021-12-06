@@ -5,7 +5,11 @@ import {
   Model,
   CreatedAt,
   UpdatedAt,
+  HasOne,
+  BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
+import { RoleModel } from './role.entity';
 
 @Table({
   modelName: 'user',
@@ -42,4 +46,11 @@ export class UserModel extends Model {
     allowNull: false,
   })
   password: string;
+
+  @ForeignKey(() => RoleModel)
+  @Column
+  roleId: number;
+
+  @BelongsTo(() => RoleModel)
+  role: RoleModel;
 }

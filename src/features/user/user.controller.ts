@@ -64,6 +64,9 @@ export class UserController {
   }
 
   @Post('role')
+  @ApiOperation({
+    description: 'Create Role by entering name of role ex: Admin',
+  })
   createRole(@Body() createRoleDto: CreateRoleDto): Promise<RoleModel> {
     return this.userService.createRole(createRoleDto);
   }

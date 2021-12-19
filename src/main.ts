@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { RedocModule } from 'nestjs-redoc';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   console.log('the env is', process.env);
@@ -9,6 +10,7 @@ async function bootstrap() {
     // logger: console,
   });
   app.setGlobalPrefix('api/v1');
+  app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT ?? 3000;
   const docsConfig = new DocumentBuilder()

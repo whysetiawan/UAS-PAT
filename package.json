@@ -44,6 +44,7 @@
     "crypto-js": "^4.1.1",
     "mongodb": "3.7.1",
     "nestjs-pino": "^2.3.1",
+    "nestjs-redoc": "^2.2.2",
     "passport": "^0.5.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",

@@ -1,11 +1,9 @@
 // import { Entity, Column, PrimaryGeneratedColumn, Table } from 'typeorm';
+import { ApiResponseProperty } from '@nestjs/swagger';
 import {
   Table,
   Column,
   Model,
-  CreatedAt,
-  UpdatedAt,
-  HasOne,
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
@@ -22,12 +20,15 @@ export class UserModel extends Model {
     primaryKey: true,
     autoIncrement: true,
   })
+  @ApiResponseProperty()
   id: number;
 
   @Column
+  @ApiResponseProperty()
   firstName: string;
 
   @Column
+  @ApiResponseProperty()
   lastName: string;
 
   // @Column({
@@ -40,15 +41,18 @@ export class UserModel extends Model {
     allowNull: false,
     unique: true,
   })
+  @ApiResponseProperty()
   username: string;
 
   @Column({
     allowNull: false,
   })
+  @ApiResponseProperty()
   password: string;
 
   @ForeignKey(() => RoleModel)
   @Column
+  @ApiResponseProperty()
   roleId: number;
 
   @BelongsTo(() => RoleModel)

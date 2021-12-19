@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { decryptFromAES256 } from 'src/utils/encryption';
 import { UserModel } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
+import AuthLoginModel from './model/auth.login.model';
 
 @Injectable()
 export class AuthService {
@@ -11,14 +12,19 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(
+    username: string,
+    password: string,
+  ): Promise<AuthLoginModel> {
     const user = await this.userService.findByUsername(username);
-    const decryptedPassword = decryptFromAES256(user.password);
-
-    if (user && decryptedPassword === password) {
-      const { password, ...result } = user;
-      // return result;
-      return this.generateAccessToken(user);
+    console.log('return user', user);
+    if (user) {
+      const decryptedPassword = decryptFromAES256(user.password);
+      if (decryptedPassword === password) {
+        const { password, ...result } = user;
+        // return result;
+        return this.generateAccessToken(user);
+      }
     }
     return null;
   }

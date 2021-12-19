@@ -7,10 +7,16 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { LoginUserDto } from '../user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.auth.guard';
+import AuthLoginModel from './model/auth.login.model';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -18,13 +24,27 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
+  @ApiOkResponse({
+    status: 201,
+    description: 'Login Success',
+    type: AuthLoginModel,
+  })
+  @ApiUnauthorizedResponse({
+    status: 401,
+    description: 'Invalid username or password',
+  })
   async login(@Body() loginUserDto: LoginUserDto): Promise<any> {
-    const user = await this.authService.validateUser(
-      loginUserDto.username,
-      loginUserDto.password,
-    );
-    if (user) return user;
-    throw new UnauthorizedException();
+    try {
+      console.log('login Dto', loginUserDto);
+      const user = await this.authService.validateUser(
+        loginUserDto.username,
+        loginUserDto.password,
+      );
+      if (user) return user;
+      throw new UnauthorizedException('Invalid username or password');
+    } catch (error) {
+      return error;
+    }
   }
 
   @Get('logout')

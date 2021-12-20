@@ -48,11 +48,11 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     // }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'mac',
-      password: '',
-      database: 'test_db',
+      host: process.env.DB_HOST ?? 'localhost',
+      port: parseInt(process.env.DB_PORT) ?? 5432,
+      username: process.env.DB_USERNAME ?? 'mac',
+      password: process.env.DB_PASSWORD ?? '',
+      database: process.env.DB_NAME ?? 'test_db',
       synchronize: true,
       ssl: true,
       // dialectOptions: {

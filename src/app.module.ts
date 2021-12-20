@@ -55,12 +55,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       database: process.env.DB_NAME ?? 'test_db',
       synchronize: true,
       ssl: true,
-      // dialectOptions: {
-      //   ssl: {
-      //     require: true,
-      //     rejectUnauthorized: false,
-      //   },
-      // },
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
       sync: {
         // force: true,
         alter: {

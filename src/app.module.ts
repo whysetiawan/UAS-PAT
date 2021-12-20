@@ -1,21 +1,28 @@
-import { Module } from '@nestjs/common';
+import { Module, Scope } from '@nestjs/common';
 // import db from './app.db_connection';
 import { UserModule } from './features/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './features/auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { UserModel } from './features/user/entities/user.entity';
+import { UserModel } from './features/user/models/user.model';
 import { LoggerModule } from 'nestjs-pino';
-import { RoleModel } from './features/user/entities/role.entity';
+import { RoleModel } from './features/user/models/role.model';
+import { StoreModule } from './features/store/store.module';
+import { StoreModel } from './features/store/models/store.model';
+import { TransformResponseInterceptor } from './utils/transform.response.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
-        prettyPrint: {
-          colorize: true,
-          levelFirst: true,
-          translateTime: 'UTC:dd/mm/yyyy, h:MM:ss TT Z',
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            colorize: true,
+            levelFirst: true,
+            translateTime: 'UTC:dd/mm/yyyy, h:MM:ss TT Z',
+          },
         },
       },
     }),
@@ -31,7 +38,7 @@ import { RoleModel } from './features/user/entities/role.entity';
     //   url: process.env.DB_URL,
     //   ssl: true,
     //   synchronize: true,
-    //   entities: ['dist/**/*.entity{.ts,.js}'],
+    //   entities: ['dist/**/*.model{.ts,.js}'],
     //   logging: true,
     //   extra: {
     //     ssl: {
@@ -41,19 +48,19 @@ import { RoleModel } from './features/user/entities/role.entity';
     // }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: process.env.DB_HOST ?? 'localhost',
-      port: parseInt(process.env.DB_PORT) ?? 5432,
-      username: process.env.DB_USERNAME ?? 'root',
-      password: process.env.DB_PASSWORD ?? '',
-      database: process.env.DB_NAME ?? 'test_db',
+      host: 'localhost',
+      port: 5432,
+      username: 'mac',
+      password: '',
+      database: 'test_db',
       synchronize: true,
       ssl: true,
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-      },
+      // dialectOptions: {
+      //   ssl: {
+      //     require: true,
+      //     rejectUnauthorized: false,
+      //   },
+      // },
       sync: {
         // force: true,
         alter: {
@@ -62,12 +69,18 @@ import { RoleModel } from './features/user/entities/role.entity';
       },
       // logging: true,
       autoLoadModels: true,
-      models: [UserModel, RoleModel],
+      models: [UserModel, RoleModel, StoreModel],
     }),
     AuthModule,
     UserModule,
+    StoreModule,
   ],
-  controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      scope: Scope.REQUEST,
+      useClass: TransformResponseInterceptor,
+    },
+  ],
 })
 export class AppModule {}

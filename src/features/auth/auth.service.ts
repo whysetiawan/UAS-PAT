@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { decryptFromAES256 } from 'src/utils/encryption';
-import { UserModel } from '../user/entities/user.entity';
+import { UserModel } from '../user/models/user.model';
 import { UserService } from '../user/user.service';
 import AuthLoginModel from './model/auth.login.model';
 
@@ -20,8 +20,9 @@ export class AuthService {
     console.log('return user', user);
     if (user) {
       const decryptedPassword = decryptFromAES256(user.password);
+      console.log('decrypted password', decryptedPassword);
       if (decryptedPassword === password) {
-        const { password, ...result } = user;
+        // const { password, ...result } = user;
         // return result;
         return this.generateAccessToken(user);
       }

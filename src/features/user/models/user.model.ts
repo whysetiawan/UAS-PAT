@@ -6,8 +6,13 @@ import {
   Model,
   BelongsTo,
   ForeignKey,
+  BeforeCreate,
+  BeforeUpdate,
+  BeforeBulkUpdate,
 } from 'sequelize-typescript';
-import { RoleModel } from './role.entity';
+import { StoreModel } from 'src/features/store/models/store.model';
+import { encryptToAES256 } from 'src/utils/encryption';
+import { RoleModel } from './role.model';
 
 @Table({
   modelName: 'user',
@@ -47,8 +52,15 @@ export class UserModel extends Model {
   @Column({
     allowNull: false,
   })
-  @ApiResponseProperty()
   password: string;
+
+  @BeforeCreate
+  @BeforeBulkUpdate
+  @BeforeUpdate
+  static encryptValue(instance: UserModel) {
+    const encrypted = encryptToAES256(instance.password);
+    instance.password = encrypted;
+  }
 
   @ForeignKey(() => RoleModel)
   @Column
@@ -57,4 +69,12 @@ export class UserModel extends Model {
 
   @BelongsTo(() => RoleModel)
   role: RoleModel;
+
+  @ForeignKey(() => StoreModel)
+  @Column
+  @ApiResponseProperty()
+  storeId: number;
+
+  @BelongsTo(() => StoreModel)
+  store: StoreModel;
 }

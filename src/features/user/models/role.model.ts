@@ -1,6 +1,6 @@
 // import { Entity, Column, PrimaryGeneratedColumn, Table } from 'typeorm';
-import { Table, Column, Model, HasOne } from 'sequelize-typescript';
-import { UserModel } from './user.entity';
+import { Table, Column, Model, HasMany } from 'sequelize-typescript';
+import { UserModel } from './user.model';
 
 @Table({
   modelName: 'role',
@@ -18,6 +18,6 @@ export class RoleModel extends Model {
   @Column
   name: string;
 
-  @HasOne(() => UserModel)
-  user: UserModel;
+  @HasMany(() => UserModel)
+  user: UserModel[];
 }

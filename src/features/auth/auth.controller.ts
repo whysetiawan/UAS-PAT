@@ -40,7 +40,11 @@ export class AuthController {
         loginUserDto.username,
         loginUserDto.password,
       );
-      if (user) return user;
+      if (user)
+        return {
+          message: 'User Logged In Success',
+          result: user,
+        };
       throw new UnauthorizedException('Invalid username or password');
     } catch (error) {
       return error;

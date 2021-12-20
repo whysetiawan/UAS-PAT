@@ -1,5 +1,5 @@
 import { ApiResponseProperty } from '@nestjs/swagger';
-import { UserModel } from 'src/features/user/entities/user.entity';
+import { UserModel } from 'src/features/user/models/user.model';
 
 export default class AuthLoginModel {
   @ApiResponseProperty()

@@ -7,9 +7,9 @@ import { StoreModel } from '../../models/store.model';
 export class StoreService {
   constructor(
     @InjectModel(StoreModel)
-    private storeRepository: typeof StoreModel,
+    private storeModel: typeof StoreModel,
   ) {
-    storeRepository.upsert({
+    storeModel.upsert({
       id: 1,
       name: 'Main Node',
       address: 'Dusseldorf',
@@ -19,20 +19,20 @@ export class StoreService {
   }
 
   findAllStore() {
-    return this.storeRepository.findAll({
+    return this.storeModel.findAll({
       limit: 50,
     });
   }
 
   createStore(createStoreDto: CreateUpdateStoreDto): Promise<StoreModel> {
-    return this.storeRepository.create(createStoreDto);
+    return this.storeModel.create(createStoreDto);
   }
 
   async updateStore(
     updateStoreDto: CreateUpdateStoreDto,
     storeId: number,
   ): Promise<boolean> {
-    const updatedStore = this.storeRepository.update(updateStoreDto, {
+    const updatedStore = this.storeModel.update(updateStoreDto, {
       where: {
         id: storeId,
       },
@@ -44,7 +44,7 @@ export class StoreService {
   }
 
   async deleteStore(storeId: number): Promise<boolean> {
-    const deleted = await this.storeRepository.destroy({
+    const deleted = await this.storeModel.destroy({
       where: {
         id: storeId,
       },

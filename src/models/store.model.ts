@@ -1,4 +1,13 @@
-import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  BelongsToMany,
+} from 'sequelize-typescript';
+import { ProductModel } from './product.model';
+import { ProductStoreModel } from './product_store.model';
 import { UserModel } from './user.model';
 
 @Table({
@@ -18,7 +27,7 @@ export class StoreModel extends Model {
   name: string;
 
   @Column({
-    type: DataType.CHAR(500),
+    type: DataType.STRING(500),
   })
   address: string;
 
@@ -34,4 +43,10 @@ export class StoreModel extends Model {
 
   @HasMany(() => UserModel)
   user: UserModel[];
+
+  @BelongsToMany(() => ProductModel, {
+    through: () => ProductStoreModel,
+    as: 'Product',
+  })
+  store: ProductModel[];
 }

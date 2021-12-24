@@ -37,9 +37,6 @@ export class UserModel extends Model {
   @ApiResponseProperty()
   lastName: string;
 
-  @Column({
-    defaultValue: [fn('CONCAT', col('first_name'), ' ', col('last_name'))],
-  })
   @ApiResponseProperty()
   fullName: string;
 

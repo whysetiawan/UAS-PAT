@@ -12,25 +12,25 @@ import { UserModel } from '../../models/user.model';
 export class UserService {
   constructor(
     @InjectModel(UserModel)
-    private userRepository: typeof UserModel,
+    private userModel: typeof UserModel,
     @InjectModel(RoleModel)
-    private roleRepository: typeof RoleModel,
+    private roleModel: typeof RoleModel,
   ) {
-    userRepository.addHook('beforeCreate', (user: UserModel) => {
+    userModel.addHook('beforeCreate', (user: UserModel) => {
       user.password = encryptToAES256(user.password);
     });
-    userRepository.addHook('beforeUpdate', 'password', (user: UserModel) => {
+    userModel.addHook('beforeUpdate', 'password', (user: UserModel) => {
       user.password = encryptToAES256(user.password);
     });
-    roleRepository.upsert({
+    roleModel.upsert({
       id: 1,
       name: 'admin',
     });
-    roleRepository.upsert({
+    roleModel.upsert({
       id: 2,
       name: 'manager',
     });
-    userRepository.upsert({
+    userModel.upsert({
       id: 1,
       firstName: 'user',
       lastName: 'admin',
@@ -39,7 +39,7 @@ export class UserService {
       password: encryptToAES256('admin'),
       roleId: 1,
     });
-    userRepository.upsert({
+    userModel.upsert({
       id: 2,
       firstName: 'user',
       lastName: 'manager',
@@ -59,7 +59,7 @@ export class UserService {
   }): Promise<UserModel[]> {
     const Op = Sequelize.Op;
     const { firstName, lastName, ...rest } = where;
-    return this.userRepository.findAll({
+    return this.userModel.findAll({
       limit,
       where: where
         ? {
@@ -85,7 +85,7 @@ export class UserService {
   }
 
   findByUsername(username: string): Promise<UserModel> {
-    return this.userRepository.findOne({
+    return this.userModel.findOne({
       where: {
         username,
       },
@@ -102,7 +102,7 @@ export class UserService {
   }
 
   findById(userId: number): Promise<UserModel> {
-    return this.userRepository.findOne({
+    return this.userModel.findOne({
       where: {
         id: userId,
       },
@@ -118,7 +118,7 @@ export class UserService {
   }
 
   async updateUser(data: CreateUpdateUserDto): Promise<boolean> {
-    const updatedUser = this.userRepository.update(data, {
+    const updatedUser = this.userModel.update(data, {
       where: {
         username: data.username,
       },
@@ -129,18 +129,18 @@ export class UserService {
   }
 
   createUser(data: CreateUpdateUserDto): Promise<UserModel> {
-    return this.userRepository.create({
+    return this.userModel.create({
       ...data,
       fullName: `${data.firstName} ${data.lastName}`,
     });
-    // return await this.userRepository.save(data);
+    // return await this.userModel.save(data);
   }
 
   createRole(data: CreateRoleDto): Promise<RoleModel> {
-    return this.roleRepository.create(data);
+    return this.roleModel.create(data);
   }
 
   findAllRole(): Promise<RoleModel[]> {
-    return this.roleRepository.findAll();
+    return this.roleModel.findAll();
   }
 }

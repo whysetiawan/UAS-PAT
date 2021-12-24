@@ -34,7 +34,10 @@ export class StoreController {
     description: 'Get All Store related Store',
   })
   async findAllStore() {
-    return await this.storeService.findAllStore();
+    return {
+      message: 'Get All Store Success',
+      result: await this.storeService.findAllStore(),
+    };
   }
 
   @Post()
@@ -47,7 +50,10 @@ export class StoreController {
     description: 'Create a Store',
   })
   async createStore(@Body() createStoreDto: CreateUpdateStoreDto) {
-    return await this.storeService.createStore(createStoreDto);
+    return {
+      mesage: 'Store created successfully',
+      result: await this.storeService.createStore(createStoreDto),
+    };
   }
 
   @Put(':id')
@@ -66,7 +72,10 @@ export class StoreController {
     @Body() updateStoreDto: CreateUpdateStoreDto,
     @Param('id') storeId: number,
   ) {
-    return await this.storeService.updateStore(updateStoreDto, storeId);
+    return {
+      message: 'Store Updated Successfully',
+      result: await this.storeService.updateStore(updateStoreDto, storeId),
+    };
   }
 
   @Delete(':id')

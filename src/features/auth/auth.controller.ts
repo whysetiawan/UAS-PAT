@@ -58,6 +58,7 @@ export class AuthController {
     this.authService.destroyAccessToken(request.user);
     return {
       message: 'Logout Success',
+      result: null,
     };
   }
 }

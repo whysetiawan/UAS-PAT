@@ -18,7 +18,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-// import { hash } from 'src/utils/encryption';
+// import { hash } from '../../utils/encryption';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
 import { CreateRoleDto } from './dto/role.dto';
 

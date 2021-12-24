@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Launch via Yarn ",
+      "request": "launch",
+      "runtimeArgs": ["start:dev"],
+      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v16.3.1/bin/node",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    }
+  ]
+}

@@ -4,11 +4,11 @@ import { UserModule } from './features/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './features/auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { UserModel } from './features/user/models/user.model';
+import { UserModel } from './models/user.model';
 import { LoggerModule } from 'nestjs-pino';
-import { RoleModel } from './features/user/models/role.model';
+import { RoleModel } from './models/role.model';
 import { StoreModule } from './features/store/store.module';
-import { StoreModel } from './features/store/models/store.model';
+import { StoreModel } from './models/store.model';
 import { TransformResponseInterceptor } from './utils/transform.response.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
@@ -48,19 +48,23 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     // }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: process.env.DB_HOST ?? 'localhost',
-      port: parseInt(process.env.DB_PORT) ?? 5432,
-      username: process.env.DB_USERNAME ?? 'mac',
-      password: process.env.DB_PASSWORD ?? '',
-      database: process.env.DB_NAME ?? 'test_db',
+      host: process.env.NODE_ENV == 'dev' ? 'localhost' : process.env.DB_HOST,
+      port:
+        process.env.NODE_ENV == 'dev' ? 5432 : parseInt(process.env.DB_PORT),
+      username: process.env.NODE_ENV == 'dev' ? 'mac' : process.env.DB_USERNAME,
+      password: process.env.NODE_ENV == 'dev' ? '' : process.env.DB_PASSWORD,
+      database: process.env.NODE_ENV == 'dev' ? 'test_db' : process.env.DB_NAME,
       synchronize: true,
-      ssl: true,
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-      },
+      ssl: process.env.NODE_ENV == 'dev' ? false : true,
+      dialectOptions:
+        process.env.NODE_ENV == 'dev'
+          ? {}
+          : {
+              ssl: {
+                require: true,
+                rejectUnauthorized: false,
+              },
+            },
       sync: {
         // force: true,
         alter: {

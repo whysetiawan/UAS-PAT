@@ -10,9 +10,10 @@ import {
   BeforeUpdate,
   BeforeBulkUpdate,
 } from 'sequelize-typescript';
-import { StoreModel } from 'src/features/store/models/store.model';
-import { encryptToAES256 } from 'src/utils/encryption';
+import { fn, col } from 'sequelize';
 import { RoleModel } from './role.model';
+import { encryptToAES256 } from '../utils/encryption';
+import { StoreModel } from './store.model';
 
 @Table({
   modelName: 'user',
@@ -35,6 +36,12 @@ export class UserModel extends Model {
   @Column
   @ApiResponseProperty()
   lastName: string;
+
+  @Column({
+    defaultValue: [fn('CONCAT', col('first_name'), ' ', col('last_name'))],
+  })
+  @ApiResponseProperty()
+  fullName: string;
 
   // @Column({
   //   nullable: false,

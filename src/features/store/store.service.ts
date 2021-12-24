@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateUpdateStoreDto } from './dto';
-import { StoreModel } from './models/store.model';
+import { StoreModel } from '../../models/store.model';
 
 @Injectable()
 export class StoreService {
@@ -10,6 +10,7 @@ export class StoreService {
     private storeRepository: typeof StoreModel,
   ) {
     storeRepository.upsert({
+      id: 1,
       name: 'Main Node',
       address: 'Dusseldorf',
       longitude: 107.60981,

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { encryptToAES256 } from 'src/utils/encryption';
-import { StoreModel } from '../store/models/store.model';
+import Sequelize from 'sequelize';
+import { encryptToAES256 } from '../../utils/encryption';
+import { StoreModel } from '../../models/store.model';
 import { CreateRoleDto } from './dto/role.dto';
-import { CreateUpdateUserDto } from './dto/user.dto';
-import { RoleModel } from './models/role.model';
-import { UserModel } from './models/user.model';
+import { CreateUpdateUserDto, FindUserWithWhereQueryDto } from './dto/user.dto';
+import { RoleModel } from '../../models/role.model';
+import { UserModel } from '../../models/user.model';
 
 @Injectable()
 export class UserService {
@@ -31,24 +32,54 @@ export class UserService {
     });
     userRepository.upsert({
       id: 1,
-      firstName: 'test',
-      lastName: 'user',
+      firstName: 'user',
+      lastName: 'admin',
+      fullName: 'user manager',
       username: 'admin',
       password: encryptToAES256('admin'),
       roleId: 1,
     });
     userRepository.upsert({
       id: 2,
-      firstName: 'test',
-      lastName: 'user',
+      firstName: 'user',
+      lastName: 'manager',
+      fullName: 'user manager',
       username: 'manager',
       password: encryptToAES256('manager'),
       roleId: 2,
     });
   }
 
-  findAll(): Promise<UserModel[]> {
+  findAll({
+    limit = 3,
+    where,
+  }: {
+    limit?: number;
+    where?: FindUserWithWhereQueryDto;
+  }): Promise<UserModel[]> {
+    const Op = Sequelize.Op;
+    const { firstName, lastName, ...rest } = where;
     return this.userRepository.findAll({
+      limit,
+      where: where
+        ? {
+            ...rest,
+            [Op.or]: {
+              firstName: {
+                [Op.or]: [
+                  { [Op.like]: `%${firstName ?? ''}%` },
+                  { [Op.like]: `%${lastName ?? ''}%` },
+                ],
+              },
+              lastName: {
+                [Op.or]: [
+                  { [Op.like]: `%${firstName ?? ''}%` },
+                  { [Op.like]: `%${lastName ?? ''}%` },
+                ],
+              },
+            },
+          }
+        : {},
       attributes: { exclude: ['password'] },
     });
   }
@@ -70,6 +101,22 @@ export class UserService {
     });
   }
 
+  findById(userId: number): Promise<UserModel> {
+    return this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      include: [
+        {
+          model: RoleModel,
+        },
+        {
+          model: StoreModel,
+        },
+      ],
+    });
+  }
+
   async updateUser(data: CreateUpdateUserDto): Promise<boolean> {
     const updatedUser = this.userRepository.update(data, {
       where: {
@@ -79,11 +126,13 @@ export class UserService {
     if (updatedUser[0] > 0) {
       return true;
     }
-    return false;
   }
 
   createUser(data: CreateUpdateUserDto): Promise<UserModel> {
-    return this.userRepository.create(data);
+    return this.userRepository.create({
+      ...data,
+      fullName: `${data.firstName} ${data.lastName}`,
+    });
     // return await this.userRepository.save(data);
   }
 

@@ -16,7 +16,7 @@ import {
 import { LoginUserDto } from '../user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.auth.guard';
-import AuthLoginModel from './model/auth.login.model';
+import AuthLoginModel from '../../models/auth.login.model';
 
 @ApiTags('Auth')
 @Controller('auth')

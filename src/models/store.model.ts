@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import { UserModel } from 'src/features/user/models/user.model';
+import { UserModel } from './user.model';
 
 @Table({
   modelName: 'store',

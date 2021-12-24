@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreateUpdateUserDto {
@@ -43,4 +43,24 @@ export class LoginUserDto {
   @ApiProperty()
   @IsString()
   password: string;
+}
+
+export class FindUserWithWhereQueryDto {
+  @ApiPropertyOptional()
+  firstName?: string;
+
+  @ApiPropertyOptional()
+  lastName?: string;
+
+  @ApiPropertyOptional()
+  roleId?: number;
+
+  @ApiPropertyOptional()
+  username?: string;
+
+  @ApiPropertyOptional()
+  storeId?: number;
+
+  @ApiPropertyOptional()
+  limit?: number;
 }

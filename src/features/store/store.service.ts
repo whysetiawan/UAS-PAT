@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CreateUpdateStoreDto } from './dto';
+import { CreateUpdateStoreDto } from './dto/create.store.dto';
 import { StoreModel } from '../../models/store.model';
 
 @Injectable()

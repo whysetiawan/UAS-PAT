@@ -16,10 +16,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
-import { CreateUpdateStoreDto } from './dto';
+import { CreateUpdateStoreDto } from './dto/create.store.dto';
 import { StoreService } from './store.service';
 
-@ApiTags('store')
+@ApiTags('Store')
 @Controller('store')
 export class StoreController {
   constructor(private storeService: StoreService) {}

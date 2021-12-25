@@ -15,6 +15,7 @@ import {
   ApiBearerAuth,
   ApiOperation,
   ApiParam,
+  ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -25,6 +26,7 @@ import { CreateRoleDto } from './dto/role.dto';
 import { CreateUpdateUserDto, FindUserWithWhereQueryDto } from './dto/user.dto';
 import { UserModel } from '../../models/user.model';
 import { UserService } from './user.service';
+import { GetUserResponseModel } from '../../response_model/user.response.model';
 
 @ApiTags('User')
 @Controller('user')
@@ -34,6 +36,10 @@ export class UserController {
   ) {}
 
   @Get('dummy')
+  @ApiResponse({
+    status: 200,
+    type: GetUserResponseModel,
+  })
   async findAllUser() {
     return {
       message: 'Get User Success',
@@ -42,6 +48,10 @@ export class UserController {
   }
 
   @Get()
+  @ApiResponse({
+    status: 200,
+    type: GetUserResponseModel,
+  })
   async findUserWithQuery(@Query() query: FindUserWithWhereQueryDto) {
     const { limit, ...where } = query;
     return {
@@ -57,9 +67,10 @@ export class UserController {
   })
   @ApiBearerAuth('access-token')
   @ApiOperation({
-    description: 'Update a specified user',
+    description:
+      "Create a user with roles.\n\n**Status** field is Optional field, use one of **['ACTIVE', 'INACTIVE', 'BLOCKED']**",
   })
-  async createUser(@Body() CreateUpdateUserDto: CreateUpdateUserDto) {
+  async createUser(@Body() createUpdateUserDto: CreateUpdateUserDto) {
     // const encryptedPassword = this.encryptionService.encryptToAES256(
     //   CreateUpdateUserDto.password,
     // );
@@ -69,7 +80,7 @@ export class UserController {
     return {
       message: 'User Created Successfully',
       result: await this.userService.createUser({
-        ...CreateUpdateUserDto,
+        ...createUpdateUserDto,
         // password: hash,
         // password: encryptedPassword,
       }),
@@ -95,7 +106,7 @@ export class UserController {
     @Body() createUpdateUserDto: CreateUpdateUserDto,
     @Param('userId') userId: number,
   ) {
-    let user;
+    let user: UserModel;
     if (!userId) {
       user = await this.userService.findByUsername(request.user.username);
     } else {

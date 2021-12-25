@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { ProductStoreModel } from '../../models/product_store.model';
 import { StoreModel } from '../../models/store.model';
 import { ProductModel } from '../../models/product.model';
+import { CreateUpdateProductDto } from './dto/create.product.dto';
 
 @Injectable()
 export class ProductService {
@@ -31,11 +32,21 @@ export class ProductService {
     });
   }
 
-  async findProductByStore() {
+  findAllProduct() {
+    return this.productModel.findAll();
+  }
+
+  async findProductByStore(storeId: number) {
+    let where = {};
+    if (typeof storeId === 'number') {
+      where = {
+        ...where,
+        storeId,
+      };
+    } else {
+    }
     const products = await this.productStoreModel.findAll({
-      where: {
-        storeId: 1,
-      },
+      where: where,
       include: [
         {
           model: ProductModel,
@@ -45,7 +56,25 @@ export class ProductService {
         },
       ],
     });
-    console.log(products);
     return products;
+  }
+
+  async createProduct(data: CreateUpdateProductDto) {
+    const createdProduct = await this.productModel.create(data);
+    this.productStoreModel.create({
+      productId: createdProduct.id,
+      storeId: data.storeId ?? 1,
+      stocks: 0,
+    });
+    return this.productModel.create(data);
+  }
+
+  updateProduct(data: CreateUpdateProductDto, productId: number) {
+    const updatedProduct = this.productModel.update(data, {
+      where: {
+        id: productId,
+      },
+    });
+    return updatedProduct[0] > 0;
   }
 }

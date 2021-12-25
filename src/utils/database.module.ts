@@ -33,6 +33,7 @@ import { UserModel } from '../models/user.model';
           drop: false,
         },
       },
+      logging: true,
       // logging: true,
       autoLoadModels: true,
       models: [

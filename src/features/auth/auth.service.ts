@@ -16,31 +16,24 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<AuthLoginModel> {
-    const user = await this.userService.findByUsername(username);
-    console.log('return user', user);
+    const user = await this.userService.findByUsername(username, []);
     if (user) {
       const decryptedPassword = decryptFromAES256(user.password);
-      console.log('decrypted password', decryptedPassword);
       if (decryptedPassword === password) {
-        // const { password, ...result } = user;
+        const { password, ...result } = user;
         // return result;
-        return this.generateAccessToken(user);
+        const payload = {
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+        return {
+          accessToken: this.jwtService.sign(payload),
+          data: user,
+        };
       }
     }
     return null;
-  }
-
-  generateAccessToken(user: UserModel) {
-    const payload = {
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    };
-    return {
-      message: 'Login Success',
-      access_token: this.jwtService.sign(payload),
-      data: user,
-    };
   }
 
   destroyAccessToken(user: any) {

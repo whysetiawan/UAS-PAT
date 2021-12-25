@@ -10,7 +10,7 @@ import {
   BeforeUpdate,
   BeforeBulkUpdate,
 } from 'sequelize-typescript';
-import { fn, col } from 'sequelize';
+import { fn, col, DataTypes } from 'sequelize';
 import { RoleModel } from './role.model';
 import { encryptToAES256 } from '../utils/encryption';
 import { StoreModel } from './store.model';
@@ -37,8 +37,13 @@ export class UserModel extends Model {
   @ApiResponseProperty()
   lastName: string;
 
-  @ApiResponseProperty()
-  fullName: string;
+  @Column({
+    defaultValue: 'INACTIVE',
+    type: DataTypes.ENUM('ACTIVE', 'INACTIVE', 'BLOCKED'),
+  })
+  status: string;
+  // @ApiResponseProperty()
+  // fullName: string;
 
   // @Column({
   //   nullable: false,
@@ -72,6 +77,7 @@ export class UserModel extends Model {
   roleId: number;
 
   @BelongsTo(() => RoleModel)
+  @ApiResponseProperty({ type: () => RoleModel })
   role: RoleModel;
 
   @ForeignKey(() => StoreModel)
@@ -79,6 +85,7 @@ export class UserModel extends Model {
   @ApiResponseProperty()
   storeId: number;
 
+  @ApiResponseProperty({ type: () => StoreModel })
   @BelongsTo(() => StoreModel)
   store: StoreModel;
 }

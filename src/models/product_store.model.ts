@@ -16,12 +16,17 @@ import { StoreModel } from './store.model';
 })
 export class ProductStoreModel extends Model {
   @ForeignKey(() => ProductModel)
-  @Column
+  @Column({
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   productId: number;
 
   @ForeignKey(() => StoreModel)
   @Column({
     unique: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   storeId: number;
 

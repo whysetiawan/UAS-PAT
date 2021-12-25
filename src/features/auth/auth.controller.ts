@@ -9,14 +9,17 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
-  ApiOkResponse,
+  ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import {
+  AuthLoginResponseModel,
+  AuthLogoutResponseModel,
+} from '../../response_model/auth.response.model';
 import { LoginUserDto } from '../user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.auth.guard';
-import AuthLoginModel from '../../models/auth.login.model';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,10 +27,9 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  @ApiOkResponse({
+  @ApiResponse({
     status: 201,
-    description: 'Login Success',
-    type: AuthLoginModel,
+    type: AuthLoginResponseModel,
   })
   @ApiUnauthorizedResponse({
     status: 401,
@@ -53,6 +55,10 @@ export class AuthController {
 
   @Get('logout')
   @ApiBearerAuth('access-token')
+  @ApiResponse({
+    status: 200,
+    type: AuthLogoutResponseModel,
+  })
   @UseGuards(JwtAuthGuard)
   async logout(@Req() request: jwtPayload) {
     this.authService.destroyAccessToken(request.user);

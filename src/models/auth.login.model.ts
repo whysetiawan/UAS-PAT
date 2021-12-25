@@ -3,10 +3,7 @@ import { UserModel } from './user.model';
 
 export default class AuthLoginModel {
   @ApiResponseProperty()
-  message: string;
-
-  @ApiResponseProperty()
-  access_token: string;
+  accessToken: string;
 
   @ApiResponseProperty()
   data: UserModel;

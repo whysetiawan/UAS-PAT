@@ -1,3 +1,4 @@
+import { ApiResponseProperty } from '@nestjs/swagger';
 import {
   Table,
   Column,
@@ -21,24 +22,29 @@ export class StoreModel extends Model {
     primaryKey: true,
     autoIncrement: true,
   })
+  @ApiResponseProperty()
   id: number;
 
   @Column
+  @ApiResponseProperty()
   name: string;
 
   @Column({
     type: DataType.STRING(500),
   })
+  @ApiResponseProperty()
   address: string;
 
   @Column({
     type: DataType.FLOAT,
   })
+  @ApiResponseProperty()
   longitude: number;
 
   @Column({
     type: DataType.FLOAT,
   })
+  @ApiResponseProperty()
   latitude: number;
 
   @HasMany(() => UserModel)

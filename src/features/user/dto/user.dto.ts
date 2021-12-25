@@ -18,6 +18,13 @@ export class CreateUpdateUserDto {
   // @IsEmail()
   // email: string;
 
+  @ApiProperty({
+    enum: ['ACTIVE', 'INACTIVE', 'BLOCKED'],
+    enumName: 'User Status',
+  })
+  @IsString()
+  status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED';
+
   @ApiProperty()
   @IsString()
   username: string;

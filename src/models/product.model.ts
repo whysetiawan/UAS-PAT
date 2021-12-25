@@ -20,7 +20,7 @@ export class ProductModel extends Model {
   name: string;
 
   @Column
-  price: string;
+  price: number;
 
   @BelongsToMany(() => StoreModel, {
     through: () => ProductStoreModel,

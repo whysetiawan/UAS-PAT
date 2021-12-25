@@ -35,18 +35,22 @@ export class UserService {
       firstName: 'user',
       lastName: 'admin',
       fullName: 'user manager',
+      status: 'ACTIVE',
       username: 'admin',
       password: encryptToAES256('admin'),
       roleId: 1,
+      storeId: 1,
     });
     userModel.upsert({
       id: 2,
       firstName: 'user',
       lastName: 'manager',
+      status: 'ACTIVE',
       fullName: 'user manager',
       username: 'manager',
       password: encryptToAES256('manager'),
       roleId: 2,
+      storeId: 1,
     });
   }
 
@@ -58,7 +62,7 @@ export class UserService {
     where?: FindUserWithWhereQueryDto;
   }): Promise<UserModel[]> {
     const Op = Sequelize.Op;
-    const { firstName, lastName, ...rest } = where;
+    const { firstName, lastName, ...rest } = where ?? {};
     return this.userModel.findAll({
       limit,
       where: where
@@ -84,12 +88,12 @@ export class UserService {
     });
   }
 
-  findByUsername(username: string): Promise<UserModel> {
+  findByUsername(username: string, exclude = ['password']): Promise<UserModel> {
     return this.userModel.findOne({
       where: {
         username,
       },
-      attributes: { exclude: ['password'] },
+      attributes: { exclude: exclude },
       include: [
         {
           model: RoleModel,
@@ -126,6 +130,7 @@ export class UserService {
     if (updatedUser[0] > 0) {
       return true;
     }
+    return false;
   }
 
   createUser(data: CreateUpdateUserDto): Promise<UserModel> {

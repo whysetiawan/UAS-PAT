@@ -32,6 +32,7 @@ export class ProductService {
         stocks: 25,
       });
     }
+    init();
   }
 
   findAllProduct() {

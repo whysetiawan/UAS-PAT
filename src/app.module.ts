@@ -45,9 +45,9 @@ import { DatabaseModule } from './utils/database.module';
     //   },
     // }),
     DatabaseModule,
+    StoreModule,
     AuthModule,
     UserModule,
-    StoreModule,
     ProductModule,
   ],
   providers: [

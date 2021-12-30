@@ -14,22 +14,24 @@ export class ProductService {
     @InjectModel(ProductStoreModel)
     private productStoreModel: typeof ProductStoreModel,
   ) {
-    productModel.upsert({
-      id: 1,
-      name: 'Croffle',
-      price: 10000,
-    });
-    productModel.upsert({
-      id: 2,
-      name: 'Salad',
-      price: 15000,
-    });
+    async function init() {
+      await productModel.upsert({
+        id: 1,
+        name: 'Croffle',
+        price: 10000,
+      });
+      await productModel.upsert({
+        id: 2,
+        name: 'Salad',
+        price: 15000,
+      });
 
-    productStoreModel.upsert({
-      productId: 2,
-      storeId: 1,
-      stocks: 25,
-    });
+      await productStoreModel.upsert({
+        productId: 2,
+        storeId: 1,
+        stocks: 25,
+      });
+    }
   }
 
   findAllProduct() {

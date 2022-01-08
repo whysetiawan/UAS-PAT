@@ -12,6 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // logger: console,
   });
+  app.enableCors();
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
   console.log('__dirname');

@@ -27,6 +27,7 @@ import { CreateUpdateUserDto, FindUserWithWhereQueryDto } from './dto/user.dto';
 import { UserModel } from '../../models/user.model';
 import { UserService } from './user.service';
 import { GetUserResponseModel } from '../../response_model/user.response.model';
+import { encryptToAES256 } from '../../utils/encryption';
 
 @ApiTags('User')
 @Controller('user')
@@ -76,14 +77,14 @@ export class UserController {
     // );
     // const salt = bcrypt.genSaltSync(16);
     // const hash = bcrypt.hashSync(CreateUpdateUserDto.password, salt);
-    // const encryptedPassword = encryptToAES256(CreateUpdateUserDto.password);
+    const encryptedPassword = encryptToAES256(createUpdateUserDto.password);
     try {
       return {
         message: 'User Created Successfully',
         result: await this.userService.createUser({
           ...createUpdateUserDto,
           // password: hash,
-          // password: encryptedPassword,
+          password: encryptedPassword,
         }),
       };
     } catch (error) {

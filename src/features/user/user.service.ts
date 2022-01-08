@@ -16,42 +16,45 @@ export class UserService {
     @InjectModel(RoleModel)
     private roleModel: typeof RoleModel,
   ) {
-    userModel.addHook('beforeCreate', (user: UserModel) => {
-      user.password = encryptToAES256(user.password);
-    });
-    userModel.addHook('beforeUpdate', 'password', (user: UserModel) => {
-      user.password = encryptToAES256(user.password);
-    });
-    roleModel.upsert({
-      id: 1,
-      name: 'admin',
-    });
-    roleModel.upsert({
-      id: 2,
-      name: 'manager',
-    });
-    userModel.upsert({
-      id: 1,
-      firstName: 'user',
-      lastName: 'admin',
-      fullName: 'user manager',
-      status: 'ACTIVE',
-      username: 'admin',
-      password: encryptToAES256('admin'),
-      roleId: 1,
-      storeId: 1,
-    });
-    userModel.upsert({
-      id: 2,
-      firstName: 'user',
-      lastName: 'manager',
-      status: 'ACTIVE',
-      fullName: 'user manager',
-      username: 'manager',
-      password: encryptToAES256('manager'),
-      roleId: 2,
-      storeId: 1,
-    });
+    async function initializeDummyUser() {
+      await userModel.addHook('beforeCreate', (user: UserModel) => {
+        user.password = encryptToAES256(user.password);
+      });
+      await userModel.addHook('beforeUpdate', 'password', (user: UserModel) => {
+        user.password = encryptToAES256(user.password);
+      });
+      await roleModel.upsert({
+        id: 1,
+        name: 'admin',
+      });
+      await roleModel.upsert({
+        id: 2,
+        name: 'manager',
+      });
+      await userModel.upsert({
+        id: 1,
+        firstName: 'user',
+        lastName: 'admin',
+        fullName: 'user manager',
+        status: 'ACTIVE',
+        username: 'admin',
+        password: encryptToAES256('admin'),
+        roleId: 1,
+        storeId: 1,
+      });
+      await userModel.upsert({
+        id: 2,
+        firstName: 'user',
+        lastName: 'manager',
+        status: 'ACTIVE',
+        fullName: 'user manager',
+        username: 'manager',
+        password: encryptToAES256('manager'),
+        roleId: 2,
+        storeId: 1,
+      });
+    }
+    initializeDummyUser();
   }
 
   findAll({

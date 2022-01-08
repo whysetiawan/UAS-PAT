@@ -1,2 +1,2 @@
 (window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d23797d"],{fc7a:function(n,a,e){"use strict";e.r(a);var t=function(){var n=this,a=n.$createElement,e=n._self._c||a;return e("v-container",[e("v-content",[e("h1",[n._v(' Detail Cabang "Name" ')])])],1)},c=[],o=e("2877"),l=e("6544"),r=e.n(l),u=e("a523"),i=e("a75b"),s={},p=Object(o["a"])(s,t,c,!1,null,null,null);a["default"]=p.exports;r()(p,{VContainer:u["a"],VContent:i["a"]})}}]);
-//# sourceMappingURL=chunk-2d23797d.7c57831b.js.map
+//# sourceMappingURL=chunk-2d23797d.182d4db4.js.map

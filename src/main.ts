@@ -3,14 +3,20 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { RedocModule } from 'nestjs-redoc';
 import { ValidationPipe } from '@nestjs/common';
+import * as express from 'express';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   console.log('the env is', process.env);
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // logger: console,
   });
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
+  console.log('__dirname');
+  app.useStaticAssets(join(__dirname, '..', 'client/dist'));
+  app.setViewEngine('html');
 
   const port = process.env.PORT ?? 3000;
   const docsConfig = new DocumentBuilder()

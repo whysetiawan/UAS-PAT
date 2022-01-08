@@ -77,14 +77,19 @@ export class UserController {
     // const salt = bcrypt.genSaltSync(16);
     // const hash = bcrypt.hashSync(CreateUpdateUserDto.password, salt);
     // const encryptedPassword = encryptToAES256(CreateUpdateUserDto.password);
-    return {
-      message: 'User Created Successfully',
-      result: await this.userService.createUser({
-        ...createUpdateUserDto,
-        // password: hash,
-        // password: encryptedPassword,
-      }),
-    };
+    try {
+      return {
+        message: 'User Created Successfully',
+        result: await this.userService.createUser({
+          ...createUpdateUserDto,
+          // password: hash,
+          // password: encryptedPassword,
+        }),
+      };
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   }
 
   @Put('/update/:userId')

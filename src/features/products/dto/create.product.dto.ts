@@ -7,14 +7,12 @@ export class CreateUpdateProductDto {
   name: string;
 
   @ApiProperty()
-  @IsNumber()
   price: number;
 
   @ApiProperty({
     required: false,
     description: 'This is Optional, default will be 1',
   })
-  @IsNumber()
   @IsOptional()
   storeId?: number;
 }

@@ -34,11 +34,9 @@ export class CreateUpdateUserDto {
   password: string;
 
   @ApiProperty()
-  @IsNumber()
   roleId: number;
 
   @ApiProperty()
-  @IsNumber()
   storeId: number;
 }
 

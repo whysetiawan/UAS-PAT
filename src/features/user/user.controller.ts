@@ -88,7 +88,7 @@ export class UserController {
         }),
       };
     } catch (error) {
-      console.log(error);
+      console.log('got an error', error);
       return;
     }
   }

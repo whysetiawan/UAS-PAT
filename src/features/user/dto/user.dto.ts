@@ -37,9 +37,9 @@ export class CreateUpdateUserDto {
   @IsNumber()
   roleId: number;
 
-  // @ApiProperty()
-  // @IsNumber()
-  // storeId: number;
+  @ApiProperty()
+  @IsNumber()
+  storeId: number;
 }
 
 export class LoginUserDto {

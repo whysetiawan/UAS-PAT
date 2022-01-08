@@ -85,6 +85,14 @@ export class UserService {
           }
         : {},
       attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: RoleModel,
+        },
+        {
+          model: StoreModel,
+        },
+      ],
     });
   }
 

@@ -22,10 +22,10 @@ import { UserModel } from '../models/user.model';
         process.env.NODE_ENV == 'dev'
           ? {}
           : {
-              // ssl: {
-              //   require: false,
-              //   rejectUnauthorized: false,
-              // },
+              ssl: {
+                require: false,
+                rejectUnauthorized: false,
+              },
             },
       sync: {
         force: false,

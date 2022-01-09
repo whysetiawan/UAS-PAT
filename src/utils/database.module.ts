@@ -23,7 +23,7 @@ import { UserModel } from '../models/user.model';
           ? {}
           : {
               ssl: {
-                require: false,
+                require: true,
                 rejectUnauthorized: false,
               },
             },

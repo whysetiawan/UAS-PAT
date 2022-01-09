@@ -1,19 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { RedocModule } from 'nestjs-redoc';
+// import { RedocModule } from 'nestjs-redoc';
 import { ValidationPipe } from '@nestjs/common';
-import * as express from 'express';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const history = require('connect-history-api-fallback');
+
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   console.log('the env is', process.env);
+  console.log('node_env is', process.env.NODE_ENV);
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // logger: console,
   });
   app.enableCors();
   app.setGlobalPrefix('api/v1');
+  app.use(
+    history({
+      rewrites: [],
+    }),
+  );
   app.useGlobalPipes(new ValidationPipe());
   console.log('__dirname');
   app.useStaticAssets(join(__dirname, '..', 'client/dist'));

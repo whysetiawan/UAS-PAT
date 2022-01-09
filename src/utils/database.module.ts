@@ -28,7 +28,7 @@ import { UserModel } from '../models/user.model';
               },
             },
       sync: {
-        force: false,
+        // force: true,
         alter: {
           drop: false,
         },

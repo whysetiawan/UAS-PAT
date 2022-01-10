@@ -3,6 +3,7 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  ConsoleLogger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,11 +24,12 @@ export class TransformResponseInterceptor<T>
   ): Observable<Response<T>> {
     return next.handle().pipe(
       map((data) => {
+        console.log('got a data', data.data);
         if (context.switchToHttp().getResponse().statusCode < 400) {
           return {
+            ...data,
             message: data.message,
             status: context.switchToHttp().getResponse().statusCode,
-            data: data.result,
           };
         }
         return data;

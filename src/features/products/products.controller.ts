@@ -23,7 +23,7 @@ export class ProductController {
   async findAllAvailableProduct() {
     return {
       message: `Get All Product Success`,
-      result: await this.productService.findAllProduct(),
+      data: await this.productService.findAllProduct(),
     };
   }
 
@@ -35,7 +35,7 @@ export class ProductController {
   async findProductByStoreId(@Param('storeId') storeId: number) {
     return {
       message: `Success Get Product from store id ${storeId}`,
-      result: await this.productService.findProductByStore(storeId),
+      data: await this.productService.findProductByStore(storeId),
     };
   }
 
@@ -43,7 +43,7 @@ export class ProductController {
   async createProduct(@Body() createUpdateProductDto: CreateUpdateProductDto) {
     return {
       message: 'Success Create Product',
-      result: await this.productService.createProduct(createUpdateProductDto),
+      data: await this.productService.createProduct(createUpdateProductDto),
     };
   }
 
@@ -59,7 +59,7 @@ export class ProductController {
     if (isUpdated) {
       return {
         message: `Success update product id ${productId}`,
-        result: createUpdateProductDto,
+        data: createUpdateProductDto,
       };
     }
     throw new BadRequestException({

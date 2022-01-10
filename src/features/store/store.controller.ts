@@ -36,7 +36,7 @@ export class StoreController {
   async findAllStore() {
     return {
       message: 'Get All Store Success',
-      result: await this.storeService.findAllStore(),
+      data: await this.storeService.findAllStore(),
     };
   }
 
@@ -52,7 +52,7 @@ export class StoreController {
   async createStore(@Body() createStoreDto: CreateUpdateStoreDto) {
     return {
       mesage: 'Store created successfully',
-      result: await this.storeService.createStore(createStoreDto),
+      data: await this.storeService.createStore(createStoreDto),
     };
   }
 
@@ -74,7 +74,7 @@ export class StoreController {
   ) {
     return {
       message: 'Store Updated Successfully',
-      result: await this.storeService.updateStore(updateStoreDto, storeId),
+      data: await this.storeService.updateStore(updateStoreDto, storeId),
     };
   }
 

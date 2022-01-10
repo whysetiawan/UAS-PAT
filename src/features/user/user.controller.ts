@@ -44,7 +44,7 @@ export class UserController {
   async findAllUser() {
     return {
       message: 'Get User Success',
-      result: await this.userService.findAll({}),
+      data: (await this.userService.findAll({})).rows,
     };
   }
 
@@ -54,10 +54,14 @@ export class UserController {
     type: GetUserResponseModel,
   })
   async findUserWithQuery(@Query() query: FindUserWithWhereQueryDto) {
-    const { limit, ...where } = query;
+    const { ...where } = query;
+    const users = await this.userService.findAll({
+      where,
+    });
     return {
-      message: 'Get Userby',
-      result: await this.userService.findAll({ where, limit }),
+      message: 'Get User by parameters',
+      total: users.total,
+      data: users.rows,
     };
   }
 
@@ -81,7 +85,7 @@ export class UserController {
     try {
       return {
         message: 'User Created Successfully',
-        result: await this.userService.createUser({
+        data: await this.userService.createUser({
           ...createUpdateUserDto,
           // password: hash,
           password: encryptedPassword,
@@ -123,7 +127,7 @@ export class UserController {
       if (isUpdated) {
         return {
           message: 'User Updated Successfully',
-          result: {
+          data: {
             ...user.toJSON(),
             ...createUpdateUserDto,
           } as UserModel,
@@ -146,7 +150,7 @@ export class UserController {
       if (user) {
         return {
           message: 'Get User Me Success',
-          result: user,
+          data: user,
         };
       }
       throw new HttpException(
@@ -167,7 +171,7 @@ export class UserController {
   async createRole(@Body() createRoleDto: CreateRoleDto) {
     return {
       message: 'Role Created Successfully',
-      result: await this.userService.createRole(createRoleDto),
+      data: await this.userService.createRole(createRoleDto),
     };
   }
 
@@ -178,7 +182,7 @@ export class UserController {
   async findAllRole() {
     return {
       message: 'Success Getting Role',
-      result: await this.userService.findAllRole(),
+      data: await this.userService.findAllRole(),
     };
   }
 }

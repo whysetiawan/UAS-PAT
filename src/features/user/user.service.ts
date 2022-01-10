@@ -10,6 +10,15 @@ import { UserModel } from '../../models/user.model';
 
 @Injectable()
 export class UserService {
+  private included = [
+    {
+      model: RoleModel,
+    },
+    {
+      model: StoreModel,
+    },
+  ];
+
   constructor(
     @InjectModel(UserModel)
     private userModel: typeof UserModel,
@@ -57,17 +66,23 @@ export class UserService {
     initializeDummyUser();
   }
 
-  findAll({
-    limit = 3,
-    where,
-  }: {
-    limit?: number;
-    where?: FindUserWithWhereQueryDto;
-  }): Promise<UserModel[]> {
+  async findAll({ where }: { where?: FindUserWithWhereQueryDto }): Promise<{
+    rows: UserModel[];
+    total: number;
+    page: number;
+    limitPerPage: number;
+  }> {
     const Op = Sequelize.Op;
-    const { firstName, lastName, ...rest } = where ?? {};
-    return this.userModel.findAll({
-      limit,
+    const { firstName, lastName, page, limitPerPage, ...rest } = where ?? {
+      page: 1,
+      limitPerPage: 3,
+    };
+    const offset = (page - 1) * limitPerPage;
+    console.log('offset bro ', offset, page, limitPerPage);
+    const result = await this.userModel.findAndCountAll({
+      limit: limitPerPage,
+      offset,
+      order: [['id', 'ASC']],
       where: where
         ? {
             ...rest,
@@ -88,15 +103,14 @@ export class UserService {
           }
         : {},
       attributes: { exclude: ['password'] },
-      include: [
-        {
-          model: RoleModel,
-        },
-        {
-          model: StoreModel,
-        },
-      ],
+      include: this.included,
     });
+    return {
+      rows: result.rows,
+      total: result.count,
+      page: where.page,
+      limitPerPage: where.limitPerPage,
+    };
   }
 
   findByUsername(username: string, exclude = ['password']): Promise<UserModel> {
@@ -105,14 +119,7 @@ export class UserService {
         username,
       },
       attributes: { exclude: exclude },
-      include: [
-        {
-          model: RoleModel,
-        },
-        {
-          model: StoreModel,
-        },
-      ],
+      include: this.included,
     });
   }
 
@@ -121,14 +128,7 @@ export class UserService {
       where: {
         id: userId,
       },
-      include: [
-        {
-          model: RoleModel,
-        },
-        {
-          model: StoreModel,
-        },
-      ],
+      include: this.included,
     });
   }
 

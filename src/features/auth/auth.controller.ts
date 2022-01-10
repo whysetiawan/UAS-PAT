@@ -45,7 +45,7 @@ export class AuthController {
       if (user)
         return {
           message: 'User Logged In Success',
-          result: user,
+          data: user,
         };
       throw new UnauthorizedException('Invalid username or password');
     } catch (error) {
@@ -64,7 +64,7 @@ export class AuthController {
     this.authService.destroyAccessToken(request.user);
     return {
       message: 'Logout Success',
-      result: null,
+      data: null,
     };
   }
 }

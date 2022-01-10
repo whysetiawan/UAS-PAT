@@ -4,9 +4,7 @@ import { AppModule } from './app.module';
 // import { RedocModule } from 'nestjs-redoc';
 import { ValidationPipe } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const history = require('connect-history-api-fallback');
 
-import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
@@ -17,14 +15,8 @@ async function bootstrap() {
   });
   app.enableCors();
   app.setGlobalPrefix('api/v1');
-  app.use(
-    history({
-      rewrites: [],
-    }),
-  );
   app.useGlobalPipes(new ValidationPipe());
-  console.log('__dirname');
-  app.useStaticAssets(join(__dirname, '..', 'client/dist'));
+  // app.useStaticAssets(join(__dirname, '..', 'client/dist'));
   app.setViewEngine('html');
 
   const port = process.env.PORT ?? 3000;

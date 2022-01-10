@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
+import { ListQueryParamsModel } from '../../../models/list_query_params_model';
 
 export class CreateUpdateUserDto {
   @ApiProperty({
@@ -50,7 +51,7 @@ export class LoginUserDto {
   password: string;
 }
 
-export class FindUserWithWhereQueryDto {
+export class FindUserWithWhereQueryDto implements ListQueryParamsModel {
   @ApiPropertyOptional()
   firstName?: string;
 
@@ -67,5 +68,8 @@ export class FindUserWithWhereQueryDto {
   storeId?: number;
 
   @ApiPropertyOptional()
-  limit?: number;
+  limitPerPage?: number;
+
+  @ApiPropertyOptional()
+  page?: number;
 }

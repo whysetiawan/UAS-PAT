@@ -30,6 +30,7 @@ import { join } from 'path';
       envFilePath: ['.env'],
     }),
     ServeStaticModule.forRoot({
+      exclude: ['/docs'],
       rootPath: join(__dirname, '..', 'client/dist'),
     }),
     DatabaseModule,
